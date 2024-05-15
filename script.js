@@ -11,6 +11,7 @@ const player1Rect = {
     speed: 5,
     points: 0
 }
+
 const player2Rect = {
     x: 1330,
     y: 350,
@@ -27,7 +28,6 @@ const ball = {
     speedX: 5,
     speedY: 5
 
-
 }
 
 // Game Loop
@@ -39,8 +39,10 @@ window.onload = function(){
             ballMovement();
 			drawGame();
             scoring();	
-        }	
-		}, 1000/framesPerSecond);
+        }else{
+            WinGameScreen();
+        }}, 1000/framesPerSecond);
+        
         // Listen for keyboard events
     document.addEventListener('keydown', handleKeyDown);
 }
@@ -83,20 +85,40 @@ function drawStart(){
     ctx.fillText("Press Enter To Start",445,375);
 }
 
+function drawWinScreen(){
+    ctx.clearRect(0, 0, c.width, c.height);
+    if (player1Rect.points == 5){
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "White";
+        ctx.fillText("Player 1 Won!!",445,375);
+    }else if(player2Rect.points == 5){
+        ctx.font = "50px Arial";
+        ctx.fillStyle = "White";
+        ctx.fillText("Player 2 Won!!",445,375);
+    }
+
+}
+
 // Draws everthing in the game when it needs to be updated
 function drawGame(){
     ctx.clearRect(0, 0, c.width, c.height);
     drawScoreboard();
+    drawNet();
     drawPlayer1();
     drawPlayer2();
     drawBall();
 }
 
 function drawScoreboard() {
-    ctx.font = "24px Arial";
+    ctx.font = "100px Arial";
     ctx.fillStyle = "white";
-    ctx.fillText("Player 1: " + player1Rect.points, 20, 30);
-    ctx.fillText("Player 2: " + player2Rect.points, c.width - 140, 30);
+    ctx.fillText(player1Rect.points, 610, 85);
+    ctx.fillText(player2Rect.points, 685, 85);
+}
+
+function drawNet(){
+    ctx.fillStyle = "White"
+    ctx.fillRect(670, 0, 10, 800)
 }
 
 // function draws Player Paddle for every frame 
@@ -122,26 +144,25 @@ function drawBall(){
 function scoring() {
     if (ball.x <= 0) { 
         player2Rect.points++; 
-        if (player2Rect.points >= 5) {
+        if (player2Rect.points <= 5) {
             resetGame();
-            GameSwitch = false
         }
         resetBall(); 
     } else if (ball.x >= c.width) { 
         player1Rect.points++; 
-        if (player1Rect.points >= 5) {
+        if (player1Rect.points <= 5) {
             resetGame();
-            GameSwitch = false
+        
         }
         resetBall(); 
     }
 }
 
 function resetGame() {
+    // GameSwitch = false;
+
     player1Rect.points = 0;
     player2Rect.points = 0;
-
-    resetBall();
 
     ctx.clearRect(0, 0, c.width, c.height);
 }
