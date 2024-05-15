@@ -1,0 +1,22 @@
+*{
+    padding: 0%;
+    margin: 0%;
+    background: rgb(173, 216, 230);
+}
+.App-Container{
+    display: grid;
+    place-items: center;
+}
+
+#Title-ScoreBoard{
+    margin-top: 35px;
+    margin-bottom: 10px;
+}
+
+#Title-ScoreBoard{
+    font-family: "Press Start 2P", system-ui;
+    font-weight: 400;
+    font-size: 60px;
+    font-style: normal;
+}
+
