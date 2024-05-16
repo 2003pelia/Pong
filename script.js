@@ -36,11 +36,10 @@ window.onload = function(){
 	setInterval(function() {
         drawStart();
         if (GameSwitch == true){
+            Scoring();
+            setTimeout(computerMovement(), 250)
             ballMovement();
-			drawGame();
-            scoring();	
-        }else{
-            WinGameScreen();
+			drawGame();	
         }}, 1000/framesPerSecond);
         
         // Listen for keyboard events
@@ -57,14 +56,14 @@ function handleKeyDown(event) {
             break;
 
         // Player 1 Controls
-        case 'w' || 'W':
-            player1Rect.y -= player1Rect.speed;
-            console.log("Player2 Y-position: " + player1Rect.y)
-            break;
-        case 's' || 'S':
-            player1Rect.y += player1Rect.speed;
-            console.log("Player2 Y-position: " + player1Rect.y)
-            break;
+        // case 'w' || 'W':
+        //     player1Rect.y -= player1Rect.speed;
+        //     console.log("Player2 Y-position: " + player1Rect.y)
+        //     break;
+        // case 's' || 'S':
+        //     player1Rect.y += player1Rect.speed;
+        //     console.log("Player2 Y-position: " + player1Rect.y)
+        //     break;
 
         // Player 2 Controls 
         case 'ArrowUp':
@@ -85,19 +84,20 @@ function drawStart(){
     ctx.fillText("Press Enter To Start",445,375);
 }
 
-function drawWinScreen(){
-    ctx.clearRect(0, 0, c.width, c.height);
-    if (player1Rect.points == 5){
-        ctx.font = "50px Arial";
-        ctx.fillStyle = "White";
-        ctx.fillText("Player 1 Won!!",445,375);
-    }else if(player2Rect.points == 5){
-        ctx.font = "50px Arial";
-        ctx.fillStyle = "White";
-        ctx.fillText("Player 2 Won!!",445,375);
-    }
+// fix after done with computerMovement() 
+// function drawWinScreen(){
+//     ctx.clearRect(0, 0, c.width, c.height);
+//     if (player1Rect.points == 5){
+//         ctx.font = "50px Arial";
+//         ctx.fillStyle = "White";
+//         ctx.fillText("Player 1 Won!!",445,375);
+//     }else if(player2Rect.points == 5){
+//         ctx.font = "50px Arial";
+//         ctx.fillStyle = "White";
+//         ctx.fillText("Player 2 Won!!",445,375);
+//     }
 
-}
+// }
 
 // Draws everthing in the game when it needs to be updated
 function drawGame(){
@@ -141,25 +141,28 @@ function drawBall(){
     ctx.fill();
 }
 
-function scoring() {
+function Scoring() {
+    // if (player1Rect.points || player2Rect.points == 2){
+    //     ball.speedX = 10
+    //     ball.speedY = 10
+    // }
     if (ball.x <= 0) { 
         player2Rect.points++; 
-        if (player2Rect.points <= 5) {
+        if (player2Rect.points == 5) {
             resetGame();
         }
         resetBall(); 
-    } else if (ball.x >= c.width) { 
+    }else if (ball.x >= c.width) { 
         player1Rect.points++; 
-        if (player1Rect.points <= 5) {
+        if (player1Rect.points == 5) {
             resetGame();
-        
         }
         resetBall(); 
     }
 }
 
 function resetGame() {
-    // GameSwitch = false;
+    GameSwitch = false;
 
     player1Rect.points = 0;
     player2Rect.points = 0;
@@ -189,4 +192,16 @@ function ballMovement(){
         ball.speedX = -ball.speedX; 
     }
     
+}
+
+function computerMovement(){
+
+    while(player1Rect.y + 50 != ball.y && ball.x <= 675){
+        if(player1Rect.y + 50 > ball.y){
+            player1Rect.y -= player1Rect.speed
+        }else if(player1Rect.y + 50 < ball.y){
+            player1Rect.y += player1Rect.speed
+        }
+    }
+   
 }
